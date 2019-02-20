@@ -8,7 +8,6 @@ namespace Obloq {
             size = 100;
         }
         uBit.serial.setTxBufferSize(size);
-        uBit.serial.setTxBufferSize(size);
     }
 
     //%
