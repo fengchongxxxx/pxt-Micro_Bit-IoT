@@ -55,11 +55,16 @@ enum LINE {
     line_4 = 4
 }
 
+
 /**
  *Obloq implementation method.
  */
 //% weight=10 color=#008B00 icon="\uf1eb" block="Obloq"
 namespace Obloq {
+
+    let textColor = 1;
+    let printfX = 0;
+    let printfY = 0;
     //OLED i2caddress
     const ssd1306_i2c_address = 0x3c;
     //OLED screen
@@ -1520,13 +1525,14 @@ namespace Obloq {
         control.onEvent(<number>32, <number>1, Obloq_serial_recevice); // register handler
     }
 
+    //IIC function
     function writeCmd(cmd: number): void {
         let buff = pins.createBuffer(2);
         buff[0] = 0;
         buff[1] = cmd;
         pins.i2cWriteBuffer(ssd1306_i2c_address, buff);
     }
-
+    //IIC function
     function writeDatBytes(address: number, buf: Buffer, count: number): void {
         let j = 1;
         let _buff = pins.createBuffer(count + 1);
@@ -1539,7 +1545,69 @@ namespace Obloq {
         pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
     }
 
+    function writeDatBytes_matrix(address: number, buf: Buffer, i_width:number, count: number): void {
+        let j = 1;
+        let _buff = pins.createBuffer(count + 1);
+        _buff[0] = 0x40; // Data Mode
+        for (let i = 0; i < count;) {
+            _buff[j] = buf[i];
+            i += 1;
+            j += 1;
+        }
+        pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
+    }
 
+
+
+    function showMatrix(x: number, y: number, width: number, height: number, pBuf: Buffer): void {
+
+        if (!pBuf) return;
+        if (x > 127 || y > 63) return;
+        if (height % 8 != 0) return;
+        let i = 0, j = 0, k = 0;
+        let _x = 0;
+        let _y = 0;
+        let widthSize = width / 8;
+        let heightSize = height / 8;
+        let writeWidth = width;
+        let matrixSize = width * height / 8;
+        let matrixBuffer = pins.createBuffer(matrixSize);
+
+        matrixBuffer.fill(0);
+        //memset(matrixBuffer, 0, matrixSize);
+
+        let bufferAddr = 0;
+
+        for (i = 0; i < height; i++) {
+            if (_y > 63) break;
+            for (j = 0; j < widthSize; j++) {
+                let data = pBuf[0];
+                for (k = 0; k < 8; k++) {
+                    if (_x > 127) break;
+                    bufferAddr = _x + _y / 8 * width;
+                    if (data & 0x80)
+                        matrixBuffer[bufferAddr] |= (0x01 << (_y % 8));
+                    else 
+                        matrixBuffer[bufferAddr] &= ~(0x01 << (_y % 8));
+                    data <<= 1;
+                    _x++;
+                }
+                pBuf;
+            }
+            _x = 0;
+            _y++;
+        }
+        _x = x, _y = y;
+        for (i = 0; i < heightSize; i++) {
+            writeCmd(SSD1306_COLUMNADDR);
+            writeCmd(_x);
+            writeCmd(_x + width - 1);
+            writeCmd(SSD1306_PAGEADDR);
+            writeCmd((_y + i * 8) / 8);
+            writeCmd((_y + i * 8 + 8) / 8);
+            writeDatBytes_matrix(ssd1306_i2c_address, matrixBuffer, i * width, writeWidth);
+        }
+    }
 
 
 
@@ -1564,10 +1632,7 @@ namespace Obloq {
         }
     }
 
-
-
     function OLED_begin() {
-        let textColor = 1;
         //config
         writeCmd(SSD1306_DISPLAYOFF);
         writeCmd(SSD1306_SETDISPLAYCLOCKDIV);
@@ -1622,6 +1687,27 @@ namespace Obloq {
         fillScreen(0);
     }
 
+    function  setCursor(x:number,y:number) {
+        if (x > 127) {
+            printfX = 127;
+        } else {
+            printfX = x;
+        }
+        y = 16 * y;
+        if (y >= 0 && y < 16)
+            printfY = 0;
+        else if (y >= 16 && y < 32)
+            printfY = 16;
+        else if (y >= 32 && y < 48)
+            printfY = 32;
+        else if (y >= 48 && y < 64)
+            printfY = 48;
+        else if (y >= 64)
+            printfY = 48;
+        else
+            printfY = 0; 
+    }
+
     /**
      * line prints a string on the OLED display
      * @param text text to display, eg: "Hello, OLED!"
@@ -1632,7 +1718,60 @@ namespace Obloq {
     //% line.fieldEditor="gridpicker" line.fieldOptions.columns=2
     //% blockId=oled_print_stringByLine
     export function showByLine(line: LINE, text: string): void {
-        return;
+        setTextColor(1);		
+        printfX = 0;				
+        setCursor(0, line);              
+        print(text);	
+    }
+
+    function setTextColor(color:number):void {
+        textColor = color;
+    }
+
+    function setCursorXY(x:number,y:number): void {
+        if (x > 127) {
+            printfX = 127;
+        } else {
+            printfX = x;
+        }
+        if (y > 63) {
+            printfY = 63;
+        } else {
+            printfY = y;
+        }
+    }
+
+    function print(text: string): void {
+        let a = 0;
+        while (text.indexOf('\0', 0) - 1)       
+        {
+            a++;
+            //let ascii = <number>(text(a) - 32);
+
+            let date = pins.createBuffer(16);
+
+            if (printfX >= 128) {
+                printfY += 16;
+                printfX = 0;
+            }
+
+            if (printfY > 64)
+                return;
+
+            let i = 0
+            for (; i < 16; i++)
+            {
+                //date[i] = ascii_8_16[ascii][i];
+            }
+            showMatrix(printfX, printfY, 8, 16, date);
+            printfX += 8;
+            let c= (128 - printfX) % 8;
+            let t= (128 - printfX) / 8;
+            if (t == 0 && c != 0) {
+                printfX += c;
+            }
+        }
+    
     }
 
     /**
@@ -1646,7 +1785,10 @@ namespace Obloq {
     //% y.min=0 y.max=63
     //% blockId=oled_print_showByXY
     export function showByXY(x: number, y: number, text: string): void {
-        return;
+        //change text->buf
+        setTextColor(1);
+        setCursorXY(x,y);
+        print(text);
     }
 
 } 
