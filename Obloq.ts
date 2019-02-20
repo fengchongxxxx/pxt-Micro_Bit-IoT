@@ -47,11 +47,146 @@ enum TOPIC {
     topic_4 = 4
 }
 
+//Line name
+enum LINE {
+    line_1 = 1,
+    line_2 = 2,
+    line_3 = 3,
+    line_4 = 4
+}
+
 /**
  *Obloq implementation method.
  */
 //% weight=10 color=#008B00 icon="\uf1eb" block="Obloq"
 namespace Obloq {
+    //OLED i2caddress
+    const ssd1306_i2c_address = 0x3c;
+    //OLED screen
+    let SSD1306_JUMPTABLE_BYTES = 4
+    let SSD1306_JUMPTABLE_LSB = 1
+    let SSD1306_JUMPTABLE_SIZE = 2
+    let SSD1306_JUMPTABLE_WIDTH = 3
+    let SSD1306_JUMPTABLE_START = 4
+    let SSD1306_WIDTH_POS = 0
+    let SSD1306_HEIGHT_POS = 1
+    let SSD1306_FIRST_CHAR_POS = 2
+    let SSD1306_CHAR_NUM_POS = 3
+    //OLED Display commands
+    let SSD1306_CHARGEPUMP = 0x8D
+    let SSD1306_COLUMNADDR = 0x21
+    let SSD1306_COMSCANDEC = 0xC8
+    let SSD1306_COMSCANINC = 0xC0
+    let SSD1306_DISPLAYALLON = 0xA5
+    let SSD1306_DISPLAYALLON_RESUME = 0xA4
+    let SSD1306_DISPLAYOFF = 0xAE
+    let SSD1306_DISPLAYON = 0xAF
+    let SSD1306_EXTERNALVCC = 0x1
+    let SSD1306_INVERTDISPLAY = 0xA7
+    let SSD1306_MEMORYMODE = 0x20
+    let SSD1306_NORMALDISPLAY = 0xA6
+    let SSD1306_PAGEADDR = 0x22
+    let SSD1306_SEGREMAP = 0xA0
+    let SSD1306_SETCOMPINS = 0xDA
+    let SSD1306_SETCONTRAST = 0x81
+    let SSD1306_SETDISPLAYCLOCKDIV = 0xD5
+    let SSD1306_SETDISPLAYOFFSET = 0xD3
+    let SSD1306_SETHIGHCOLUMN = 0x10
+    let SSD1306_SETLOWCOLUMN = 0x00
+    let SSD1306_SETMULTIPLEX = 0xA8
+    let SSD1306_SETPRECHARGE = 0xD9
+    let SSD1306_SETSEGMENTREMAP = 0xA1
+    let SSD1306_SETSTARTLINE = 0x40
+    let SSD1306_SETVCOMDETECT = 0xDB
+    let SSD1306_SWITCHCAPVCC = 0x2
+    let BEGIN_ERR_OK = 0
+    let BEGIN_ERR_ERR = -1
+    let BEGIN_WAR_NOTEST = 1
+    let DISPLAY_ERR_OK = 0
+    let DISPLAY_ERR = -1
+    let DISPLAY_ERR_PARAM = -2
+    let DISPLAY_ERR_NOTSUPPORT = -3
+    let DISPLAY_ERR_MEMOVER = -4
+
+
+    //Motor IIC address
+    const address = 0x10
+
+    /**
+     * The user selects the 2-way dc motor.
+    */
+    export enum Motors {
+        M1 = 0x00,
+        M2 = 0x01
+    }
+
+    /**
+     * The user defines the motor rotation direction.
+    */
+    export enum Dir {
+        //% blockId="CW" block="CW"
+        CW = 0x01,
+        //% blockId="CCW" block="CCW"
+        CCW = 0x00
+    }
+
+    /**
+     * Execute a motor
+     * M1~M2.
+     * speed(0~255).
+    */
+    //% weight=90
+    //% blockId=motor_motorRun block="Motor|%index|dir|%Dir|speed|%speed"
+    //% speed.min=0 speed.max=255
+    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=1
+    //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=1
+    export function motorRun(index: Motors, direction: Dir, speed: number): void {
+        let buf = pins.createBuffer(3);
+        if (index == 0) {
+            buf[0] = 0x00;
+        }
+        if (index == 1) {
+            buf[0] = 0x02;
+        }
+        buf[1] = direction;
+        buf[2] = speed;
+        pins.i2cWriteBuffer(address, buf);
+    }
+
+    /**
+	 * Stop the dc motor.
+    */
+    //% weight=20
+    //% blockId=motor_motorStop block="Motor stop|%index"
+    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=1
+    export function motorStop(index: Motors) {
+        let buf = pins.createBuffer(3);
+        if (index == 0) {
+            buf[0] = 0x00;
+        }
+        if (index == 1) {
+            buf[0] = 0x02;
+        }
+        buf[1] = 0;
+        buf[2] = 0;
+        pins.i2cWriteBuffer(address, buf);
+    }
+
+    /**
+	 * Stop all motors
+    */
+    //% weight=10
+    //% blockId=motor_motorStopAll block="Motor Stop All"
+    export function motorStopAll(): void {
+        let buf = pins.createBuffer(3);
+        buf[0] = 0x00;
+        buf[1] = 0;
+        buf[2] = 0;
+        pins.i2cWriteBuffer(address, buf);
+        buf[0] = 0x02;
+        pins.i2cWriteBuffer(address, buf);
+    }
+
 
     //serial
     let OBLOQ_SERIAL_INIT = OBLOQ_BOOL_TYPE_IS_FALSE
@@ -1384,4 +1519,134 @@ namespace Obloq {
         obloqEventOn()
         control.onEvent(<number>32, <number>1, Obloq_serial_recevice); // register handler
     }
+
+    function writeCmd(cmd: number): void {
+        let buff = pins.createBuffer(2);
+        buff[0] = 0;
+        buff[1] = cmd;
+        pins.i2cWriteBuffer(ssd1306_i2c_address, buff);
+    }
+
+    function writeDatBytes(address: number, buf: Buffer, count: number): void {
+        let j = 1;
+        let _buff = pins.createBuffer(count + 1);
+        _buff[0] = 0x40; // Data Mode
+        for (let i = 0; i < count;) {
+            _buff[j] = buf[i];
+            i += 1;
+            j += 1;
+        }
+        pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
+    }
+
+
+
+
+
+
+    function fillScreen(color: number): void {
+        let i = 0;
+        let buf = pins.createBuffer(16);
+        if (color) {
+            color = 0xff;
+            for (i = 0; i < 16; i++) {
+                buf[i] = 0xff;
+            }
+        }
+        writeCmd(SSD1306_COLUMNADDR);
+        writeCmd(0x0);
+        writeCmd(0x7f);
+        writeCmd(SSD1306_PAGEADDR);
+        writeCmd(0x0);
+        writeCmd(0x7);
+        for (i = 0; i < 128 * 64 / 8 / 16; i++) {
+            writeDatBytes(ssd1306_i2c_address, buf, 16);
+        }
+    }
+
+
+
+    function OLED_begin() {
+        let textColor = 1;
+        //config
+        writeCmd(SSD1306_DISPLAYOFF);
+        writeCmd(SSD1306_SETDISPLAYCLOCKDIV);
+        writeCmd(0xF0);//Increase speed of the display max ~96Hz
+        writeCmd(SSD1306_SETMULTIPLEX);
+        writeCmd(0x3F);
+        writeCmd(SSD1306_SETDISPLAYOFFSET);
+        writeCmd(0x00);
+        writeCmd(SSD1306_SETSTARTLINE);
+        writeCmd(SSD1306_CHARGEPUMP);
+        writeCmd(0x14);
+        writeCmd(SSD1306_MEMORYMODE);
+        writeCmd(0x00);
+        writeCmd(SSD1306_SEGREMAP);
+        writeCmd(SSD1306_COMSCANINC);
+        writeCmd(SSD1306_SETCOMPINS);
+        writeCmd(0x12);
+        writeCmd(SSD1306_SETCONTRAST);
+        writeCmd(0xCF);
+        writeCmd(SSD1306_SETPRECHARGE);
+        writeCmd(0xF1);
+        writeCmd(SSD1306_DISPLAYALLON_RESUME);
+        writeCmd(SSD1306_NORMALDISPLAY);
+        writeCmd(0x2e);// stop scroll
+        writeCmd(SSD1306_DISPLAYON);
+        //setRotaion(eROTATION_180);
+        writeCmd(0xa1);
+        writeCmd(0xc8);
+
+        fillScreen(1);
+        return BEGIN_WAR_NOTEST;
+    }
+
+
+    /**
+     * clears the screen.
+    */
+    //% weight=20
+    //% blockId=oled_init_screen
+    //% block="init OLED Screen"
+    export function OLED_init(): void {
+        OLED_begin();
+    }
+
+    /**
+     * clears the screen.
+     */
+    //% weight=20
+    //% blockId=oled_clear_screen
+    //% block="clear OLED display"
+    export function OLED_clear(): void {
+        fillScreen(0);
+    }
+
+    /**
+     * line prints a string on the OLED display
+     * @param text text to display, eg: "Hello, OLED!"
+     * @param line line to set the line
+     */
+    //% weight=92 blockGap=8
+    //% block="show by line| %line | string | %text"
+    //% line.fieldEditor="gridpicker" line.fieldOptions.columns=2
+    //% blockId=oled_print_stringByLine
+    export function showByLine(line: LINE, text: string): void {
+        return;
+    }
+
+    /**
+     * Coordinate printing a string on the OLED display
+     * @param text text to display, eg: "Hello, OLED!"
+     * @param x y  x,y to (x,y)
+     */
+    //% weight=95 blockGap=8
+    //% block="show By x| %x | y| %y | string | %text"
+    //% x.min=0 x.max=127
+    //% y.min=0 y.max=63
+    //% blockId=oled_print_showByXY
+    export function showByXY(x: number, y: number, text: string): void {
+        return;
+    }
+
 } 
