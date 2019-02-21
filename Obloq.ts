@@ -14,7 +14,7 @@
  */
 
 let ascii_8_16 = [
-/*" "*/[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+/*" "*/[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 /*"!"*/[0, 0, 24, 60, 60, 60, 24, 24, 24, 0, 24, 24, 0, 0, 0, 0],
 /*"\"*/[0, 99, 99, 99, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 /*"#"*/[0, 0, 0, 54, 54, 127, 54, 54, 54, 127, 54, 54, 0, 0, 0, 0],
@@ -69,7 +69,7 @@ let ascii_8_16 = [
 /*"T"*/[0, 0, 255, 219, 153, 24, 24, 24, 24, 24, 24, 60, 0, 0, 0, 0],
 /*"U"*/[0, 0, 99, 99, 99, 99, 99, 99, 99, 99, 99, 62, 0, 0, 0, 0],
 /*"V"*/[0, 0, 99, 99, 99, 99, 99, 99, 99, 54, 28, 8, 0, 0, 0, 0],
-/*"W"*/[0, 0, 99, 99, 99, 99, 99, 107, 107, 127, 54, 54, 0, 0, 0, 0 ],
+/*"W"*/[0, 0, 99, 99, 99, 99, 99, 107, 107, 127, 54, 54, 0, 0, 0, 0],
 /*"X"*/[0, 0, 195, 195, 102, 60, 24, 24, 60, 102, 195, 195, 0, 0, 0, 0],
 /*"Y"*/[0, 0, 195, 195, 195, 102, 60, 24, 24, 24, 24, 60, 0, 0, 0, 0],
 /*"Z"*/[0, 0, 127, 99, 67, 6, 12, 24, 48, 97, 99, 127, 0, 0, 0, 0],
@@ -98,7 +98,7 @@ let ascii_8_16 = [
 /*"q"*/[0, 0, 0, 0, 0, 59, 102, 102, 102, 102, 62, 6, 6, 15, 0, 0],
 /*"r"*/[0, 0, 0, 0, 0, 110, 59, 51, 48, 48, 48, 120, 0, 0, 0, 0],
 /*"s"*/[0, 0, 0, 0, 0, 62, 99, 56, 14, 3, 99, 62, 0, 0, 0, 0],
-/*"t"*/[0, 0, 8, 24, 24, 126, 24, 24, 24, 24, 27, 14, 0, 0, 0, 0 ],
+/*"t"*/[0, 0, 8, 24, 24, 126, 24, 24, 24, 24, 27, 14, 0, 0, 0, 0],
 /*"u"*/[0, 0, 0, 0, 0, 102, 102, 102, 102, 102, 102, 59, 0, 0, 0, 0],
 /*"v"*/[0, 0, 0, 0, 0, 99, 99, 54, 54, 28, 28, 8, 0, 0, 0, 0],
 /*"w"*/[0, 0, 0, 0, 0, 99, 99, 99, 107, 107, 127, 54, 0, 0, 0, 0],
@@ -106,7 +106,7 @@ let ascii_8_16 = [
 /*"y"*/[0, 0, 0, 0, 0, 99, 99, 99, 99, 99, 63, 3, 6, 60, 0, 0],
 /*"z"*/[0, 0, 0, 0, 0, 127, 102, 12, 24, 48, 99, 127, 0, 0, 0, 0],
 /*"{"*/[0, 0, 14, 24, 24, 24, 112, 24, 24, 24, 24, 14, 0, 0, 0, 0],
-/*"|"*/[0, 0, 24, 24, 24, 24, 24, 0, 24, 24, 24, 24, 24, 0, 0, 0 ],
+/*"|"*/[0, 0, 24, 24, 24, 24, 24, 0, 24, 24, 24, 24, 24, 0, 0, 0],
 /*"}"*/[0, 0, 112, 24, 24, 24, 14, 24, 24, 24, 24, 112, 0, 0, 0, 0],
 /*"~"*/[0, 0, 59, 110, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
@@ -1646,18 +1646,15 @@ namespace Obloq {
         pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
     }
 
-    function writeDatBytes_matrix(address: number, buf: Buffer, i_width: number, count: number): void {
-        let j = 1;
-        let _buff = pins.createBuffer(count + 1);
+    function writeDatBytes_matrixBuffer(address: number, pBuf: Buffer, offset: number, writeWidth: number): void {
+        let _buff = pins.createBuffer(writeWidth + 1);
         _buff[0] = 0x40; // Data Mode
-        for (let i = 0; i < count;) {
-            _buff[j] = buf[i];
-            i += 1;
-            j += 1;
+        for (let i = 0; i < writeWidth; i++)
+        {
+            _buff[i + 1] = pBuf[offset + i]
         }
         pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
     }
-
 
 
     function showMatrix(x: number, y: number, width: number, height: number, pBuf: Buffer): void {
@@ -1678,27 +1675,37 @@ namespace Obloq {
         //memset(matrixBuffer, 0, matrixSize);
 
         let bufferAddr = 0;
-
-        for (i = 0; i < height; i++) {
+        let z = 0;
+        for (i = 0; i < height; i++) 
+        {
             if (_y > 63) break;
-            for (j = 0; j < widthSize; j++) {
-                let data = pBuf[0];
+            for (j = 0; j < widthSize; j++) 
+            {
+                let data = pBuf[z];
                 for (k = 0; k < 8; k++) {
+
                     if (_x > 127) break;
-                    bufferAddr = _x + _y / 8 * width;
-                    if (data & 0x80)
-                        matrixBuffer[bufferAddr] |= (0x01 << (_y % 8));
-                    else
-                        matrixBuffer[bufferAddr] &= ~(0x01 << (_y % 8));
+                    bufferAddr = _x + Math.floor((_y / 8)) * width;
+                    let dataBuffer = matrixBuffer[bufferAddr]
+                    if (data & 0x80) 
+                    {
+                        dataBuffer |= (0x01 << (_y % 8));
+                    }
+                    else 
+                    {
+                        dataBuffer &= ~(0x01 << (_y % 8));
+                    }
+                    matrixBuffer[bufferAddr] = dataBuffer;
                     data <<= 1;
                     _x++;
                 }
-                pBuf;
             }
+            z++;
             _x = 0;
             _y++;
         }
         _x = x, _y = y;
+
         for (i = 0; i < heightSize; i++) {
             writeCmd(SSD1306_COLUMNADDR);
             writeCmd(_x);
@@ -1706,8 +1713,9 @@ namespace Obloq {
             writeCmd(SSD1306_PAGEADDR);
             writeCmd((_y + i * 8) / 8);
             writeCmd((_y + i * 8 + 8) / 8);
-            writeDatBytes_matrix(ssd1306_i2c_address, matrixBuffer, i * width, writeWidth);
+            writeDatBytes_matrixBuffer(ssd1306_i2c_address, matrixBuffer, i * width, writeWidth);
         }
+
     }
 
 
@@ -1763,7 +1771,7 @@ namespace Obloq {
         writeCmd(0xa1);
         writeCmd(0xc8);
 
-        fillScreen(1);
+        fillScreen(0);
         return BEGIN_WAR_NOTEST;
     }
 
@@ -1843,11 +1851,10 @@ namespace Obloq {
     }
 
     function print(text: string): void {
-        let a = 0;
-        while (text.indexOf('\0', 0) - 1) {
-            a++;
-            //let ascii = <number>(text(a) - 32);
-
+        let _count = 0;
+        while (text[_count]) {
+            serial.writeLine(text[_count])
+            let ascii = text.charCodeAt(_count) - 32
             let date = pins.createBuffer(16);
 
             if (printfX >= 128) {
@@ -1860,7 +1867,7 @@ namespace Obloq {
 
             let i = 0
             for (; i < 16; i++) {
-                //date[i] = ascii_8_16[ascii][i];
+                date[i] = ascii_8_16[ascii][i];
             }
             showMatrix(printfX, printfY, 8, 16, date);
             printfX += 8;
@@ -1869,8 +1876,8 @@ namespace Obloq {
             if (t == 0 && c != 0) {
                 printfX += c;
             }
+            _count++;
         }
-
     }
 
     /**
@@ -1880,8 +1887,8 @@ namespace Obloq {
      */
     //% weight=95 blockGap=8
     //% block="show By x| %x | y| %y | string | %text"
-    //% x.min=0 x.max=127
-    //% y.min=0 y.max=63
+    //% x.min=0 x.max=120
+    //% y.min=0 y.max=48
     //% blockId=oled_print_showByXY
     export function showByXY(x: number, y: number, text: string): void {
         //change text->buf
