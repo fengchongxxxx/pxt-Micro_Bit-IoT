@@ -296,8 +296,8 @@ namespace Obloq {
 
     //serial
     let OBLOQ_SERIAL_INIT = OBLOQ_BOOL_TYPE_IS_FALSE
-    let OBLOQ_SERIAL_TX = SerialPin.P2
-    let OBLOQ_SERIAL_RX = SerialPin.P1
+    let OBLOQ_SERIAL_TX = SerialPin.P14
+    let OBLOQ_SERIAL_RX = SerialPin.P13
     //wifi
     let OBLOQ_WIFI_SSID = OBLOQ_STR_TYPE_IS_NONE
     let OBLOQ_WIFI_PASSWORD = OBLOQ_STR_TYPE_IS_NONE
@@ -650,17 +650,16 @@ namespace Obloq {
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% blockId=Obloq_http_setup
-    //% block="Obloq setup http | Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send | Wi-Fi: | name: %SSID| password: %PASSWORD| http config: | ip: %IP| port: %PORT | start connection"
-    export function Obloq_http_setup(/*serial*/receive: SerialPin, send: SerialPin,
-                                     /*wifi*/SSID: string, PASSWORD: string,
+    //% block="Obloq setup http | Wi-Fi: | name: %SSID| password: %PASSWORD| http config: | ip: %IP| port: %PORT | start connection"
+    export function Obloq_http_setup(/*wifi*/SSID: string, PASSWORD: string,
                                      /*mqtt*/IP: string, PORT: number):
         void {
         OBLOQ_WIFI_SSID = SSID
         OBLOQ_WIFI_PASSWORD = PASSWORD
         OBLOQ_HTTP_IP = IP
         OBLOQ_HTTP_PORT = PORT
-        OBLOQ_SERIAL_TX = send
-        OBLOQ_SERIAL_RX = receive
+        OBLOQ_SERIAL_TX = SerialPin.P14
+        OBLOQ_SERIAL_RX = SerialPin.P13
         Obloq_serial_init()
         Obloq_start_connect_http()
     }
@@ -680,9 +679,8 @@ namespace Obloq {
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% SERVER.fieldEditor="gridpicker" SERVER.fieldOptions.columns=2
     //% blockId=Obloq_mqtt_setup
-    //% block="Obloq setup mqtt | Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send | Wi-Fi: | name: %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC | start connection: | Servers: %SERVER"
-    export function Obloq_mqtt_setup(/*serial*/receive: SerialPin, send: SerialPin,
-                                     /*wifi*/SSID: string, PASSWORD: string,
+    //% block="Obloq setup mqtt | Wi-Fi: | name: %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC | start connection: | Servers: %SERVER"
+    export function Obloq_mqtt_setup(/*wifi*/SSID: string, PASSWORD: string,
                                      /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                      /*connect*/SERVER: SERVERS):
         void {
@@ -691,8 +689,8 @@ namespace Obloq {
         OBLOQ_MQTT_PWD = IOT_PWD
         OBLOQ_MQTT_ID = IOT_ID
         OBLOQ_MQTT_TOPIC[0][0] = IOT_TOPIC
-        OBLOQ_SERIAL_TX = send
-        OBLOQ_SERIAL_RX = receive
+        OBLOQ_SERIAL_TX = SerialPin.P14
+        OBLOQ_SERIAL_RX = SerialPin.P13
         Obloq_serial_init()
         Obloq_start_connect_mqtt(SERVER, "connect wifi")
     }
@@ -1775,64 +1773,6 @@ namespace Obloq {
         return BEGIN_WAR_NOTEST;
     }
 
-
-    /**
-     * clears the screen.
-    */
-    //% weight=20
-    //% blockId=oled_init_screen
-    //% block="init OLED Screen"
-    export function OLED_init(): void {
-        OLED_begin();
-    }
-
-    /**
-     * clears the screen.
-     */
-    //% weight=20
-    //% blockId=oled_clear_screen
-    //% block="clear OLED display"
-    export function OLED_clear(): void {
-        fillScreen(0);
-    }
-
-    function setCursor(x: number, y: number) {
-        if (x > 127) {
-            printfX = 127;
-        } else {
-            printfX = x;
-        }
-        y = 16 * y;
-        if (y >= 0 && y < 16)
-            printfY = 0;
-        else if (y >= 16 && y < 32)
-            printfY = 16;
-        else if (y >= 32 && y < 48)
-            printfY = 32;
-        else if (y >= 48 && y < 64)
-            printfY = 48;
-        else if (y >= 64)
-            printfY = 48;
-        else
-            printfY = 0;
-    }
-
-    /**
-     * line prints a string on the OLED display
-     * @param text text to display, eg: "Hello, OLED!"
-     * @param line line to set the line
-     */
-    //% weight=92 blockGap=8
-    //% block="show by line| %line | string | %text"
-    //% line.fieldEditor="gridpicker" line.fieldOptions.columns=2
-    //% blockId=oled_print_stringByLine
-    export function showByLine(line: LINE, text: string): void {
-        setTextColor(1);
-        printfX = 0;
-        setCursor(0, line);
-        print(text);
-    }
-
     function setTextColor(color: number): void {
         textColor = color;
     }
@@ -1880,16 +1820,75 @@ namespace Obloq {
         }
     }
 
+    function setCursor(x: number, y: number) {
+        if (x > 127) {
+            printfX = 127;
+        } else {
+            printfX = x;
+        }
+        y = 16 * y;
+        if (y >= 0 && y < 16)
+            printfY = 0;
+        else if (y >= 16 && y < 32)
+            printfY = 16;
+        else if (y >= 32 && y < 48)
+            printfY = 32;
+        else if (y >= 48 && y < 64)
+            printfY = 48;
+        else if (y >= 64)
+            printfY = 48;
+        else
+            printfY = 0;
+    }
+
+
+
+    /**
+     * clears the screen.
+    */
+    //% weight=20
+    //% blockId=OLED_init
+    //% block="init OLED Screen"
+    //% advanced=true
+    export function OLED_init(): void {
+        OLED_begin();
+    }
+
+    /**
+     * clears the screen.
+     */
+    //% weight=20
+    //% blockId=OLED_clear
+    //% block="clear OLED display"
+    //% advanced=true
+    export function OLED_clear(): void {
+        fillScreen(0);
+    }
+
+    /**
+     * line prints a string on the OLED display
+     */
+    //% weight=92 blockGap=8
+    //% block="show by line| %line | string | %text"
+    //% line.fieldEditor="gridpicker" line.fieldOptions.columns=2
+    //% blockId=showByLine
+    //% advanced=true
+    export function showByLine(line: LINE, text: string): void {
+        setTextColor(1);
+        printfX = 0;
+        setCursor(0, line);
+        print(text);
+    }
+
     /**
      * Coordinate printing a string on the OLED display
-     * @param text text to display, eg: "Hello, OLED!"
-     * @param x y  x,y to (x,y)
      */
     //% weight=95 blockGap=8
     //% block="show By x| %x | y| %y | string | %text"
     //% x.min=0 x.max=120
     //% y.min=0 y.max=48
-    //% blockId=oled_print_showByXY
+    //% blockId=showByXY
+    //% advanced=true
     export function showByXY(x: number, y: number, text: string): void {
         //change text->buf
         setTextColor(1);

@@ -1,8 +1,8 @@
 {
 	"Obloq.SERVERS.China|block": "中国",
 	"Obloq.SERVERS.Global|block": "全球",
-	"Obloq.Obloq_mqtt_setup|block": "Obloq mqtt 初始设置 | 引脚设置: | 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| 物联网服务: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (默认 topic_0) Topic: %IOT_TOPIC | 启动连接: | 服务器: %SERVER",
-	"Obloq.Obloq_http_setup|block": "Obloq http 初始设置 | 引脚设置: | 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| http 配置: | ip地址: %IP| 端口号: %PORT | 启动连接",
+	"Obloq.Obloq_mqtt_setup|block": "Obloq mqtt 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| 物联网服务: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (默认 topic_0) Topic: %IOT_TOPIC | 启动连接: | 服务器: %SERVER",
+	"Obloq.Obloq_http_setup|block": "Obloq http 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| http 配置: | ip地址: %IP| 端口号: %PORT | 启动连接",
 	"Obloq.Obloq_serial_pin_set|block": "引脚设置| 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
 	"Obloq.Obloq_serial_quit|block": "断开串口连接",
 	"Obloq.Obloq_send_ping|block": "发送PING",
@@ -21,5 +21,10 @@
 	"Obloq.Obloq_mqtt_callback_user_more|block": "在 %top|收到消息时运行",
 	"Obloq.Obloq_http_get|block": "http(get) | url %url| 超时(毫秒) %time",
 	"Obloq.Obloq_http_post|block": "http(post) | url %url| content %content| 超时(毫秒) %time",
-	"Obloq.Obloq_http_put|block": "http(put) | url %url| content %content| 超时(毫秒) %time"
+	"Obloq.Obloq_http_put|block": "http(put) | url %url| content %content| 超时(毫秒) %time",
+    
+    "Obloq.OLED_init|block": "OLED 128*64 初始化",
+    "Obloq.OLED_clear|block": "OLED 128*64 清屏",
+    "Obloq.showByLine|block": "OLED 128*64 第| %line| 行 |显示 %text",
+    "Obloq.showByXY|block": "OLED 128*64 坐标 x:| %x | y:| %y | 显示  %text"
 }

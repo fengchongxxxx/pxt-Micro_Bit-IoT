@@ -15,8 +15,6 @@ Obloq.Obloq_mqtt_callback_user_more(TOPIC.topic_4, function (message) {
     basic.showString(message)
 })
 Obloq.Obloq_mqtt_setup(
-SerialPin.P1,
-SerialPin.P2,
 "dfrobotYanfa",
 "hidfrobot",
 "HJZTNhw3fm",

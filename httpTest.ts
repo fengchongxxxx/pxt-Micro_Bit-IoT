@@ -1,7 +1,5 @@
 //get post
 Obloq.Obloq_http_setup(
-    SerialPin.P1,
-    SerialPin.P2,
     "dfrobotYanfa",
     "hidfrobot",
     "192.168.0.106",
@@ -16,8 +14,6 @@ Obloq.Obloq_http_setup(
     
 //IFTTT
 Obloq.Obloq_http_setup(
-    SerialPin.P1,
-    SerialPin.P2,
     "dfrobotYanfa",
     "hidfrobot",
     "maker.ifttt.com",

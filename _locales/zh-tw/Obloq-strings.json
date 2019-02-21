@@ -21,5 +21,10 @@
 	"Obloq.Obloq_mqtt_callback_user_more|block": "在 %top|收到消息時運行",
 	"Obloq.Obloq_http_get|block": "http(get) | url %url| 超时(毫秒) %time",
 	"Obloq.Obloq_http_post|block": "http(post) | url %url| content %content| 超时(毫秒) %time",
-	"Obloq.Obloq_http_put|block": "http(put) | url %url| content %content| 超时(毫秒) %time"
+	"Obloq.Obloq_http_put|block": "http(put) | url %url| content %content| 超时(毫秒) %time",
+    
+    "Obloq.OLED_init|block": "OLED 128*64 初始化",
+    "Obloq.OLED_clear|block": "OLED 128*64 清屏",
+    "Obloq.showByLine|block": "OLED 128*64 第| %line| 行 |显示 %text",
+    "Obloq.showByXY|block": "OLED 128*64 坐标 x:| %x | y:| %y | 显示  %text"
 }
