@@ -1,17 +1,17 @@
 /*！
- * @file Obloq/Obloq.ts
- * @brief DFRobot's obloq makecode library.
- * @n [Get the module here](http://www.dfrobot.com.cn/goods-1577.html)
- * @n Obloq is a serial port of WIFI connection module, Obloq can connect 
- *    to Microsoft Azure IoT and other standard MQTT protocol IoT.
- *
- * @copyright	[DFRobot](http://www.dfrobot.com), 2016
- * @copyright	GNU Lesser General Public License
- *
- * @author [email](xin.li@dfrobot.com)
- * @version  V1.0
- * @date  2018-03-20
- */
+* @file Obloq/Obloq.ts
+* @brief DFRobot's obloq makecode library.
+* @n [Get the module here](http://www.dfrobot.com.cn/goods-1577.html)
+* @n Obloq is a serial port of WIFI connection module, Obloq can connect 
+*    to Microsoft Azure IoT and other standard MQTT protocol IoT.
+*
+* @copyright	[DFRobot](http://www.dfrobot.com), 2016
+* @copyright	GNU Lesser General Public License
+*
+* @author [email](xin.li@dfrobot.com)
+* @version  V1.0
+* @date  2018-03-20
+*/
 
 let ascii_8_16 = [
 /*" "*/[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -1631,6 +1631,7 @@ namespace Obloq {
         buff[1] = cmd;
         pins.i2cWriteBuffer(ssd1306_i2c_address, buff);
     }
+
     //IIC function
     function writeDatBytes(address: number, buf: Buffer, count: number): void {
         let j = 1;
@@ -1647,8 +1648,7 @@ namespace Obloq {
     function writeDatBytes_matrixBuffer(address: number, pBuf: Buffer, offset: number, writeWidth: number): void {
         let _buff = pins.createBuffer(writeWidth + 1);
         _buff[0] = 0x40; // Data Mode
-        for (let i = 0; i < writeWidth; i++)
-        {
+        for (let i = 0; i < writeWidth; i++) {
             _buff[i + 1] = pBuf[offset + i]
         }
         pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
@@ -1674,23 +1674,19 @@ namespace Obloq {
 
         let bufferAddr = 0;
         let z = 0;
-        for (i = 0; i < height; i++) 
-        {
+        for (i = 0; i < height; i++) {
             if (_y > 63) break;
-            for (j = 0; j < widthSize; j++) 
-            {
+            for (j = 0; j < widthSize; j++) {
                 let data = pBuf[z];
                 for (k = 0; k < 8; k++) {
 
                     if (_x > 127) break;
                     bufferAddr = _x + Math.floor((_y / 8)) * width;
                     let dataBuffer = matrixBuffer[bufferAddr]
-                    if (data & 0x80) 
-                    {
+                    if (data & 0x80) {
                         dataBuffer |= (0x01 << (_y % 8));
                     }
-                    else 
-                    {
+                    else {
                         dataBuffer &= ~(0x01 << (_y % 8));
                     }
                     matrixBuffer[bufferAddr] = dataBuffer;
@@ -1849,7 +1845,7 @@ namespace Obloq {
     //% weight=20
     //% blockId=OLED_init
     //% block="init OLED Screen"
-    //% advanced=true
+    //% async
     export function OLED_init(): void {
         OLED_begin();
     }
@@ -1860,7 +1856,7 @@ namespace Obloq {
     //% weight=20
     //% blockId=OLED_clear
     //% block="clear OLED display"
-    //% advanced=true
+    //% async
     export function OLED_clear(): void {
         fillScreen(0);
     }
@@ -1872,7 +1868,7 @@ namespace Obloq {
     //% block="show by line| %line | string | %text"
     //% line.fieldEditor="gridpicker" line.fieldOptions.columns=2
     //% blockId=showByLine
-    //% advanced=true
+    //% async
     export function showByLine(line: LINE, text: string): void {
         setTextColor(1);
         printfX = 0;
@@ -1888,7 +1884,7 @@ namespace Obloq {
     //% x.min=0 x.max=120
     //% y.min=0 y.max=48
     //% blockId=showByXY
-    //% advanced=true
+    //% async
     export function showByXY(x: number, y: number, text: string): void {
         //change text->buf
         setTextColor(1);

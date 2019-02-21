@@ -22,6 +22,11 @@
 	"Obloq.Obloq_http_get|block": "http(get) | url %url| 超时(毫秒) %time",
 	"Obloq.Obloq_http_post|block": "http(post) | url %url| content %content| 超时(毫秒) %time",
 	"Obloq.Obloq_http_put|block": "http(put) | url %url| content %content| 超时(毫秒) %time",
+    "Obloq.Dir.CW|block": "正转",
+    "Obloq.Dir.CCW|block": "反转",
+    "Obloq.motorRun|block": "电机|%index|方向|%Dir|速度|%speed",
+    "Obloq.motorStop|block": "电机 停止|%index",
+    "Obloq.motorStopAll|block": "停止所有电机",
     
     "Obloq.OLED_init|block": "OLED 128*64 初始化",
     "Obloq.OLED_clear|block": "OLED 128*64 清屏",
