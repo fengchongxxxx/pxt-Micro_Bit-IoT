@@ -304,21 +304,6 @@ namespace Obloq {
         }
     }
 
-    /**
-	 * Stop all motors
-    */
-    //% weight=45
-    //% blockId=motor_motorStopAll block="Motor Stop All"
-    export function motorStopAll(): void {
-        let buf = pins.createBuffer(3);
-        buf[0] = 0x00;
-        buf[1] = 0;
-        buf[2] = 0;
-        pins.i2cWriteBuffer(address, buf);
-        buf[0] = 0x02;
-        pins.i2cWriteBuffer(address, buf);
-    }
-
 
     //serial
     let OBLOQ_SERIAL_INIT = OBLOQ_BOOL_TYPE_IS_FALSE
@@ -1776,7 +1761,6 @@ namespace Obloq {
             }
             _count++;
         }
-        serial.writeString("===\r\n")
     }
 
 
