@@ -150,10 +150,10 @@ enum TOPIC {
 
 //Line name
 enum LINE {
-    line_1 = 1,
-    line_2 = 2,
-    line_3 = 3,
-    line_4 = 4
+    line_1 = 0,
+    line_2 = 1,
+    line_3 = 2,
+    line_4 = 3
 }
 
 
@@ -223,7 +223,8 @@ namespace Obloq {
     */
     export enum Motors {
         M1 = 0x00,
-        M2 = 0x01
+        M2 = 0x01,
+        ALL = 0x02
     }
 
     /**
@@ -248,15 +249,28 @@ namespace Obloq {
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=1
     export function motorRun(index: Motors, direction: Dir, speed: number): void {
         let buf = pins.createBuffer(3);
-        if (index == 0) {
+        if(index == 2){
+            buf[1] = direction;
+            buf[2] = speed;
+
             buf[0] = 0x00;
-        }
-        if (index == 1) {
+            pins.i2cWriteBuffer(address, buf);
+
             buf[0] = 0x02;
+            pins.i2cWriteBuffer(address, buf);
         }
-        buf[1] = direction;
-        buf[2] = speed;
-        pins.i2cWriteBuffer(address, buf);
+        else
+        {
+            if (index == 0) {
+                buf[0] = 0x00;
+            }
+            if (index == 1) {
+                buf[0] = 0x02;
+            }
+            buf[1] = direction;
+            buf[2] = speed;
+            pins.i2cWriteBuffer(address, buf);
+        }
     }
 
     /**
@@ -267,15 +281,27 @@ namespace Obloq {
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=1
     export function motorStop(index: Motors) {
         let buf = pins.createBuffer(3);
-        if (index == 0) {
-            buf[0] = 0x00;
-        }
-        if (index == 1) {
+        if (index == 2) {
+            buf[1] = 0;
+            buf[2] = 0;
+
             buf[0] = 0x02;
+            pins.i2cWriteBuffer(address, buf);
+
+            buf[0] = 0x00;
+            pins.i2cWriteBuffer(address, buf);
         }
-        buf[1] = 0;
-        buf[2] = 0;
-        pins.i2cWriteBuffer(address, buf);
+        else {
+            if (index == 0) {
+                buf[0] = 0x00;
+            }
+            if (index == 1) {
+                buf[0] = 0x02;
+            }
+            buf[1] = 0;
+            buf[2] = 0;
+            pins.i2cWriteBuffer(address, buf);
+        }
     }
 
     /**
@@ -1648,14 +1674,19 @@ namespace Obloq {
     function writeDatBytes_matrixBuffer(address: number, pBuf: Buffer, offset: number, writeWidth: number): void {
         let _buff = pins.createBuffer(writeWidth + 1);
         _buff[0] = 0x40; // Data Mode
+
         for (let i = 0; i < writeWidth; i++) {
             _buff[i + 1] = pBuf[offset + i]
         }
+
+
+        //_buff[writeWidth] = 0xff;
         pins.i2cWriteBuffer(ssd1306_i2c_address, _buff);
     }
 
-
     function showMatrix(x: number, y: number, width: number, height: number, pBuf: Buffer): void {
+
+        let matrixBuffer = pins.createBuffer(16);
 
         if (!pBuf) return;
         if (x > 127 || y > 63) return;
@@ -1667,22 +1698,18 @@ namespace Obloq {
         let heightSize = height / 8;
         let writeWidth = width;
         let matrixSize = width * height / 8;
-        let matrixBuffer = pins.createBuffer(matrixSize);
-
         matrixBuffer.fill(0);
-        //memset(matrixBuffer, 0, matrixSize);
-
         let bufferAddr = 0;
+
         let z = 0;
         for (i = 0; i < height; i++) {
             if (_y > 63) break;
             for (j = 0; j < widthSize; j++) {
                 let data = pBuf[z];
                 for (k = 0; k < 8; k++) {
-
                     if (_x > 127) break;
                     bufferAddr = _x + Math.floor((_y / 8)) * width;
-                    let dataBuffer = matrixBuffer[bufferAddr]
+                    let dataBuffer = matrixBuffer[bufferAddr];
                     if (data & 0x80) {
                         dataBuffer |= (0x01 << (_y % 8));
                     }
@@ -1698,7 +1725,13 @@ namespace Obloq {
             _x = 0;
             _y++;
         }
+
+
+
         _x = x, _y = y;
+
+
+
 
         for (i = 0; i < heightSize; i++) {
             writeCmd(SSD1306_COLUMNADDR);
@@ -1788,11 +1821,11 @@ namespace Obloq {
 
     function print(text: string): void {
         let _count = 0;
-        while (text[_count]) {
-            serial.writeLine(text[_count])
-            let ascii = text.charCodeAt(_count) - 32
-            let date = pins.createBuffer(16);
+        let date = pins.createBuffer(16);
 
+        while (text[_count]) {
+            date.fill(0);
+            let ascii = text.charCodeAt(_count) - 32
             if (printfX >= 128) {
                 printfY += 16;
                 printfX = 0;
@@ -1886,7 +1919,6 @@ namespace Obloq {
     //% blockId=showByXY
     //% async
     export function showByXY(x: number, y: number, text: string): void {
-        //change text->buf
         setTextColor(1);
         setCursorXY(x, y);
         print(text);
