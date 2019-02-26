@@ -7,7 +7,6 @@ Micro:Bit-IOT - composite module
 
 * [URL](#url)
 * [Summary](#summary)
-* [Blocks](#blocks)
 * [Example](#example)
 * [License](#license)
 
@@ -21,23 +20,14 @@ OBLOQ is a serial port of WIFI connection module, which is used to receive and s
 Firmware upgrade switch on board, easy to upgrade firmware.
 Add controls for OLED display and dc motor
 
-## Blocks
-
-### MQTT
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTT.png)
-
-
 ## Example
 
 ### MQTT
 ![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTTDemo.png)
 
-get code: ```https://github.com/DFRobot/pxt-Obloq/blob/master/mqtttest.ts```
+get code: ```https://github.com/fengchongxxxx/ssssss/blob/master/mqtttest.ts```
 
-Multiple services：
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTTMoreDemo.png)
-
-get code: ```https://github.com/DFRobot/pxt-Obloq/blob/master/mqttMoretest.ts```
+get code: ```https://github.com/fengchongxxxx/ssssss/blob/master/mqttMoretest.ts```
 
 Get the iot of things platform: [East IoT](http://iot.dfrobot.com.cn/).
 
