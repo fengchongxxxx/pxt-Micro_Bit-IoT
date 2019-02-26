@@ -23,11 +23,11 @@
 	"Obloq.Obloq_http_put|block": "http(put) | url %url| content %content| 超时(毫秒) %time",
     "Obloq.Dir.CW|block": "正转",
     "Obloq.Dir.CCW|block": "反转",
-    "Obloq.motorRun|block": "电机|%index|方向|%Dir|速度|%speed",
-    "Obloq.motorStop|block": "电机 停止|%index",
+    "Obloq.motorRun|block": "MicroIoT 电机|%index|方向|%Dir|速度|%speed",
+    "Obloq.motorStop|block": "MicroIoT 电机 停止|%index",
     
-    "Obloq.OLED_init|block": "OLED 128*64 初始化",
-    "Obloq.OLED_clear|block": "OLED 128*64 清屏",
-    "Obloq.showByLine|block": "OLED 128*64 第| %line| 行 |显示 %text",
-    "Obloq.showByXY|block": "OLED 128*64 坐标 x:| %x | y:| %y | 显示  %text"
+    "Obloq.OLED_init|block": "MicroIoT OLED 128*64 初始化",
+    "Obloq.OLED_clear|block": "MicroIoT OLED 128*64 清屏",
+    "Obloq.showByLine|block": "MicroIoT OLED 128*64 第| %line| 行 |显示 %text",
+    "Obloq.showByXY|block": "MicroIoT OLED 128*64 坐标 x:| %x | y:| %y | 显示  %text"
 }
