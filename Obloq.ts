@@ -8,9 +8,9 @@
 * @copyright	[DFRobot](http://www.dfrobot.com), 2016
 * @copyright	GNU Lesser General Public License
 *
-* @author [email](xin.li@dfrobot.com)
-* @version  V1.0
-* @date  2018-03-20
+* @author 
+* @version  
+* @date  
 */
 
 let ascii_8_16 = [
@@ -140,6 +140,7 @@ const OBLOQ_ERROR_TYPE_IS_MQTT_SUBTOPIC_FAILURE = -6
 const OBLOQ_STR_TYPE_IS_NONE = ""
 const OBLOQ_BOOL_TYPE_IS_TRUE = true
 const OBLOQ_BOOL_TYPE_IS_FALSE = false
+
 //topics name
 enum TOPIC {
     topic_1 = 1,
@@ -160,7 +161,7 @@ enum LINE {
 /**
  *IOT implementation method.
  */
-//% weight=10 color=#008B00 icon="\uf1eb" block=IOT
+//% weight=10 color=#008B00 icon="\uf1eb" block=Micro：Bit-IoT
 namespace Obloq {
 
     let textColor = 1;
@@ -654,8 +655,8 @@ namespace Obloq {
      * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
      * @param IP to IP ,eg: "0.0.0.0"
      * @param PORT to PORT ,eg: 80
-     * @param receive to receive ,eg: SerialPin.P1
-     * @param send to send ,eg: SerialPin.P2
+     * @param receive to receive , SerialPin.P13
+     * @param send to send , SerialPin.P14
     */
     //% weight=99
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
@@ -682,8 +683,8 @@ namespace Obloq {
      * @param IOT_ID to IOT_ID ,eg: "yourIotId"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
      * @param IOT_TOPIC to IOT_TOPIC ,eg: "yourIotTopic"
-     * @param receive to receive ,eg: SerialPin.P1
-     * @param send to send ,eg: SerialPin.P2
+     * @param receive to receive ,SerialPin.P13
+     * @param send to send ,SerialPin.P14
     */
     //% weight=102
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3

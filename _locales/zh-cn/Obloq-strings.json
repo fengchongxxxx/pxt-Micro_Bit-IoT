@@ -1,8 +1,8 @@
 {
 	"Obloq.SERVERS.China|block": "中国",
 	"Obloq.SERVERS.Global|block": "全球",
-	"Obloq.Obloq_mqtt_setup|block": "Obloq mqtt 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| 物联网服务: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (默认 topic_0) Topic: %IOT_TOPIC | 启动连接: | 服务器: %SERVER",
-	"Obloq.Obloq_http_setup|block": "Obloq http 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| http 配置: | ip地址: %IP| 端口号: %PORT | 启动连接",
+	"Obloq.Obloq_mqtt_setup|block": "microIoT_Obloq mqtt 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| 物联网服务: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (默认 topic_0) Topic: %IOT_TOPIC | 启动连接: | 服务器: %SERVER",
+	"Obloq.Obloq_http_setup|block": "microIoT_Obloq http 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| http 配置: | ip地址: %IP| 端口号: %PORT | 启动连接",
 	"Obloq.Obloq_serial_pin_set|block": "引脚设置| 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
 	"Obloq.Obloq_serial_quit|block": "断开串口连接",
 	"Obloq.Obloq_send_ping|block": "发送PING",
