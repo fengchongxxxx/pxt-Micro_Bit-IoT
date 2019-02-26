@@ -1,6 +1,6 @@
-# Obloq
+# Micro:Bit-IOT
 
-OBLOQ - IoT Module
+Micro:Bit-IOT - composite module 
 ---------------------------------------------------------
 
 ## Table of Contents
@@ -12,13 +12,14 @@ OBLOQ - IoT Module
 * [License](#license)
 
 ## URL
-project URL: ```https://github.com/DFRobot/pxt-Obloq```
+project URL: ```https://github.com/fengchongxxxx/ssssss```
 
 ## Summary
-Internet of things is the embedded system technology, mobile technology, web technology all together, the soul of its development is based on the user experience as the core, is characterized with hardware, network, platform, service and other different stakeholders in the field of industry cooperation or fusion directly.
-Along with the development of the Internet of things, the heat increases, several mature Internet platform at home and abroad, but most of the Internet of things platform are geared to the needs of professional developers, complex operation, learn hard.To this end, we have launched the OBLOQ Internet of things module, which is equipped with DFRobot's own Internet of things platform, which greatly reduces the use threshold of the Internet of things.
-OBLOQ is a serial port of WIFI connection module for receiving and sending Internet of things information.Compact size, low price, simple interface, plug and play, suitable for 3.3V~5V control system.Simple software programming, without complex basic knowledge, can quickly build a set of Internet of things applications.
-Board firmware upgrade switch, easy to upgrade the firmware.
+The Internet of things is a combination of embedded system technology, mobile technology and web technology. The soul of its development is user experience as the core, and it is a feature of direct cooperation or integration with different stakeholders such as hardware, network, platform and service in the industry.
+With the development of the Internet of things, the heat is getting higher and higher. There are several mature Internet platforms at home and abroad, but most of the Internet of things platforms are geared to the needs of professional developers, with complex operation and hard work.To this end, we launched the OBLOQ Internet of things module, which is equipped with DFRobot's own Internet of things platform, greatly lowering the threshold for the use of the Internet of things.
+OBLOQ is a serial port of WIFI connection module, which is used to receive and send Internet of things information.Compact size, low price, simple interface, plug and play, suitable for 3.3v ~5V control system.Simple software programming, no complex basic knowledge, can quickly build a set of Internet of things applications.
+Firmware upgrade switch on board, easy to upgrade firmware.
+Add controls for OLED display and dc motor
 
 ## Blocks
 
