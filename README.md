@@ -11,7 +11,7 @@ Micro:Bit_IOT - composite module
 * [License](#license)
 
 ## URL
-project URL: ```https://github.com/fengchongxxxx/ssssss```
+project URL: ```https://github.com/fengchongxxxx/pxt-Micro_Bit-IoT```
 
 ## Summary
 The Internet of things is a combination of embedded system technology, mobile technology and web technology. The soul of its development is user experience as the core, and it is a feature of direct cooperation or integration with different stakeholders such as hardware, network, platform and service in the industry.
@@ -24,9 +24,9 @@ Add controls for OLED display and dc motor
 
 ### MQTT
 
-get code: ```https://github.com/fengchongxxxx/ssssss/blob/master/mqtttest.ts```
+get code: ```https://github.com/fengchongxxxx/pxt-Micro_Bit-IoT/blob/master/mqtttest.ts```
 
-get code: ```https://github.com/fengchongxxxx/ssssss/blob/master/mqttMoretest.ts```
+get code: ```https://github.com/fengchongxxxx/pxt-Micro_Bit-IoT/blob/master/mqttMoretest.ts```
 
 Get the iot of things platform: [East IoT](http://iot.dfrobot.com.cn/).
 
@@ -45,5 +45,5 @@ MIT
 * for PXT/microbit
 (The metadata above is needed for package search.)
 ```package
-Micro:Bit_IOT=github:fengchongxxxx/ssssss
+Micro:Bit_IOT=github:fengchongxxxx/pxt-Micro_Bit-IoT
 ```
