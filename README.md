@@ -1,6 +1,6 @@
-# Micro:Bit-IOT
+# Micro:Bit_IOT
 
-Micro:Bit-IOT - composite module 
+Micro:Bit_IOT - composite module 
 ---------------------------------------------------------
 
 ## Table of Contents
@@ -45,5 +45,5 @@ MIT
 * for PXT/microbit
 (The metadata above is needed for package search.)
 ```package
-Micro:Bit-IOT=github:fengchongxxxx/ssssss
+Micro:Bit_IOT=github:fengchongxxxx/ssssss
 ```
