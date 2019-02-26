@@ -161,7 +161,7 @@ enum LINE {
  *IOT implementation method.
  */
 //% weight=10 color=#008B00 icon="\uf1eb" block=Micro:Bit_IoT
-namespace Obloq {
+namespace MicroIOT {
 
     let textColor = 1;
     let printfX = 0;
