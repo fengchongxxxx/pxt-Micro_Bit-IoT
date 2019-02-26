@@ -6,7 +6,6 @@
 	"Obloq.Obloq_serial_pin_set|block": "引腳設置| 接收數據(綠色導線): %receive| 發送數據(藍色導線): %send",
 	"Obloq.Obloq_serial_quit|block": "斷開串口連接",
 	"Obloq.Obloq_send_ping|block": "發送PING",
-	"Obloq.Obloq_get_version|block": "版本號",
 	"Obloq.Obloq_get_heartbeat|block": "心跳請求",
 	"Obloq.Obloq_stop_heartbeat|block": "停止心跳請求",
 	"Obloq.Obloq_wifi_reconnect|block": "重新連接WIFI",
