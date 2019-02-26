@@ -1,8 +1,8 @@
 /*！
-* @file Obloq/Obloq.ts
+* @file 
 * @brief DFRobot's  makecode library.
 * @n [Get the module here](http://www.dfrobot.com.cn/goods-1577.html)
-* @n Obloq is a serial port of WIFI connection module, Obloq can connect 
+* @n  is a serial port of WIFI connection module, Obloq can connect 
 *    to Microsoft Azure IoT and other standard MQTT protocol IoT.
 *
 * @copyright	[DFRobot](http://www.dfrobot.com), 2016
