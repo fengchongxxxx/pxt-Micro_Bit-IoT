@@ -795,48 +795,6 @@ namespace Obloq {
 
 
     /**
-     * Get the software version.time(ms): private long maxWait
-     * @param time to timeout, eg: 10000
-    */
-    //% weight=50
-    //% blockId=Obloq_get_version
-    //% block="get version"
-    //% advanced=true
-    export function Obloq_get_version(): string {
-        while (OBLOQ_WORKING_MODE_IS_STOP) { basic.pause(20) }
-        let time = 5000
-        if (time < 100) {
-            time = 100
-        }
-        let timeout = time / 100
-        let _timeout = 0
-        if (!OBLOQ_SERIAL_INIT) {
-            Obloq_serial_init()
-        }
-        obloqWriteString("|1|2|\r")
-
-        while (OBLOQ_BOOL_TYPE_IS_TRUE) {
-            if (OBLOQ_ANSWER_CMD == "GetVersion") {
-                return OBLOQ_ANSWER_CONTENT
-            } else if (OBLOQ_ANSWER_CMD == "timeout") {
-                return "timeout"
-            }
-            basic.pause(100)
-            _timeout += 1
-            if (_timeout > timeout) {
-                if (OBLOQ_ANSWER_CMD != "GetVersion") {
-                    return "timeout"
-                }
-                else {
-                    return OBLOQ_ANSWER_CONTENT
-                }
-            }
-        }
-        return OBLOQ_STR_TYPE_IS_NONE
-    }
-
-
-    /**
      * Heartbeat request.time(ms): private long maxWait
      * @param time to timeout, eg: 10000
     */
@@ -1836,31 +1794,6 @@ namespace Obloq {
         }
     }
 
-
-
-    function setCursor(x: number, y: number) {
-        if (x > 127) {
-            printfX = 127;
-        } else {
-            printfX = x;
-        }
-        y = 16 * y;
-        if (y >= 0 && y < 16)
-            printfY = 0;
-        else if (y >= 16 && y < 32)
-            printfY = 16;
-        else if (y >= 32 && y < 48)
-            printfY = 32;
-        else if (y >= 48 && y < 64)
-            printfY = 48;
-        else if (y >= 64)
-            printfY = 48;
-        else
-            printfY = 0;
-    }
-
-
-
     /**
      * clears the screen.
     */
@@ -1894,7 +1827,7 @@ namespace Obloq {
     export function showByLine(line: LINE, text: string): void {
         setTextColor(1);
         printfX = 0;
-        setCursor(0, line);
+        printfY = 16 * line;
         print(text);
     }
 
